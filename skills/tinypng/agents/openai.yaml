@@ -1,0 +1,6 @@
+interface:
+  display_name: "TinyPNG"
+  short_description: "Compress images with optional resize or format conversion"
+  default_prompt: "Use $tinypng to compress this image, and optionally resize, convert, or preserve metadata."
+policy:
+  allow_implicit_invocation: true
