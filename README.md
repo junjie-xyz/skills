@@ -12,7 +12,7 @@ npx skills add junjie-xyz/skills
 
 ### `fable`
 
-Ask Claude Fable 5 for advice, review, analysis, or writing help. It does not change files or take actions.
+Ask Claude Fable 5 for focused advice, review, analysis, or writing help while keeping paid usage as low as possible. It does not change files or take actions.
 
 Use `$fable`.
 
