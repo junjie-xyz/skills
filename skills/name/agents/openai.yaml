@@ -1,0 +1,4 @@
+interface:
+  display_name: "Name Thread"
+  short_description: "Rename the current thread and toggle its important marker"
+  default_prompt: "Use $name to rename this thread from the conversation context."

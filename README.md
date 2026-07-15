@@ -10,6 +10,26 @@ npx skills add junjie-xyz/skills
 
 ## Skills
 
+### `fable`
+
+Ask Claude Fable 5 for concise, read-only consultation.
+
+### `max`
+
+Escalate blocked or high-impact problems to a max-effort Codex subagent.
+
+### `name`
+
+Rename the current Codex thread from its conversation context and toggle its important marker.
+
+### `sub`
+
+Delegate an explicitly marked task to a Codex subagent.
+
+### `turn`
+
+Create a fresh Codex thread from a compact handoff while preserving the current model and reasoning effort.
+
 ### `tinypng`
 
 Compress and optimize PNG, JPEG, WebP, and AVIF images with the TinyPNG/Tinify HTTP API.

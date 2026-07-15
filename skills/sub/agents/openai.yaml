@@ -1,0 +1,4 @@
+interface:
+  display_name: "Sub"
+  short_description: "Delegate an @sub task to a subagent"
+  default_prompt: "Use $sub to delegate this task to a subagent."

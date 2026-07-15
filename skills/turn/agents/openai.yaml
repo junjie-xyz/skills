@@ -1,0 +1,6 @@
+interface:
+  display_name: "Turn"
+  short_description: "Start a matching-model thread from a compact handoff"
+  default_prompt: "Use $turn to prepare a fresh thread from this conversation."
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Max"
+  short_description: "Escalate hard problems to a max-effort subagent"
+  default_prompt: "Use $max to get a deep second opinion on this blocked problem."
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Fable"
+  short_description: "Ask Claude Fable 5 for concise read-only consultation."
+  default_prompt: "Use $fable to provide concise read-only advice on this question:"
+policy:
+  allow_implicit_invocation: false
