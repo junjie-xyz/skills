@@ -1,6 +1,6 @@
 ---
 name: sub
-description: "Delegate a user-marked task to a subagent through spawn_agent. Trigger when the user writes @sub or $sub, including suffix usage like '帮我完成xxx，@sub'."
+description: "Delegate a user-marked task to a subagent through spawn_agent. Trigger when the user writes @sub or $sub, including suffix usage like 'Complete this task, @sub'."
 ---
 
 # Sub

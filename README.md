@@ -12,23 +12,33 @@ npx skills add junjie-xyz/skills
 
 ### `fable`
 
-Ask Claude Fable 5 for concise, read-only consultation.
+Ask Claude Fable 5 for advice, review, analysis, or writing help. It does not change files or take actions.
+
+Use `$fable`.
 
 ### `max`
 
-Escalate blocked or high-impact problems to a max-effort Codex subagent.
+Ask a Codex subagent to think deeply about a hard or stuck problem.
+
+Use `$max` or `@max`. It may also run automatically after repeated failures.
 
 ### `name`
 
-Rename the current Codex thread from its conversation context and toggle its important marker.
+Rename the current Codex thread and add or remove its important marker.
+
+Use `$name` to rename it or `$name 1` to mark it as important.
 
 ### `sub`
 
-Delegate an explicitly marked task to a Codex subagent.
+Send a task to a Codex subagent.
+
+Put `$sub` or `@sub` before or after the task.
 
 ### `turn`
 
-Create a fresh Codex thread from a compact handoff while preserving the current model and reasoning effort.
+Start a new Codex thread with the context, model, and reasoning effort from the current thread.
+
+Use `$turn`, with an optional new task after it.
 
 ### `tinypng`
 
