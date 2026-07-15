@@ -24,7 +24,7 @@ Use `$max` or `@max`. It may also run automatically after repeated failures.
 
 ### `name`
 
-Rename the current Codex thread and add or remove its important marker.
+Rename the current Codex thread based on its context, and add or remove its important marker.
 
 Use `$name` to rename it or `$name 1` to mark it as important.
 
