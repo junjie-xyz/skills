@@ -2,62 +2,39 @@
 
 Codex skills for reuse.
 
+## Skills
+
+| Skill | Full Name | Description |
+| --- | --- | --- |
+| [`turn`](skills/turn/SKILL.md) | New Thread Handoff | Create a new Codex thread with a compact handoff, preserving the current model and reasoning effort. |
+| [`fable`](skills/fable/SKILL.md) | Fable Advisor | Ask Claude Fable 5 for help while keeping token usage to an absolute minimum. |
+| [`ask`](skills/ask/SKILL.md) | Ask User Questions with Inline HTML | An alternative to Codex's `request_user_input` and Claude Code's `AskUserQuestion` tools, with rich interactive content and batched questions. |
+| [`sub`](skills/sub/SKILL.md) | Subagent Delegation | Send a task to a Codex subagent. |
+| [`name`](skills/name/SKILL.md) | Context-Aware Thread Renaming | Rename the current Codex thread based on the conversation context and optionally mark it as important. |
+| [`tinypng`](skills/tinypng/SKILL.md) | TinyPNG Image Optimization | Compress, resize, and convert PNG, JPEG, WebP, and AVIF images with the TinyPNG API. |
+| [`max`](skills/max/SKILL.md) | Max-Reasoning Advisor | Ask a Codex subagent to think deeply about a hard or stuck problem. |
+
 ## Install
+
+Install all skills:
 
 ```bash
 npx skills add junjie-xyz/skills
 ```
 
-## Skills
+Install a single skill:
 
-### `ask`
+```bash
+npx skills add junjie-xyz/skills --skill <skill-name>
+```
 
-Clarify requirements through batched, localized interactive questionnaires.
+### `turn` dependency
 
-Use `$ask` or `@ask`, or say `ask me questions`.
+`turn` requires Matt Pocock's [`handoff`](https://github.com/mattpocock/skills/tree/main/skills/productivity/handoff) skill. Install both skills:
 
-### `fable`
-
-Ask Claude Fable 5 for focused advice, review, analysis, or writing help while keeping paid usage as low as possible. It does not change files or take actions.
-
-Use `$fable`.
-
-### `max`
-
-Ask a Codex subagent to think deeply about a hard or stuck problem.
-
-Use `$max` or `@max`. It may also run automatically after repeated failures.
-
-### `name`
-
-Rename the current Codex thread based on its context, and add or remove its important marker.
-
-Use `$name` to rename it or `$name 1` to mark it as important.
-
-### `sub`
-
-Send a task to a Codex subagent.
-
-Put `$sub` or `@sub` before or after the task.
-
-### `turn`
-
-Start a new Codex thread with the context, model, and reasoning effort from the current thread.
-
-Use `$turn`, with an optional new task after it.
-
-### `tinypng`
-
-Compress and optimize PNG, JPEG, WebP, and AVIF images with the TinyPNG/Tinify HTTP API.
-
-Use it when you want Codex to compress an image, optionally resize it, convert format, or preserve metadata.
-
-Example prompts:
-
-```text
-Use $tinypng to compress ./hero.png
-Use $tinypng to compress ./hero.png and set width to 128
-Use $tinypng to convert ./banner.png to webp
+```bash
+npx skills add https://github.com/mattpocock/skills --skill handoff
+npx skills add junjie-xyz/skills --skill turn
 ```
 
 ## Repo Layout
