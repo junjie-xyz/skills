@@ -1,6 +1,7 @@
 # junjie-xyz/skills
 
-Codex skills for reuse.
+> [!NOTE]
+> Skill names are intentionally short for faster, easier invocation.
 
 ## Skills
 
