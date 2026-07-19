@@ -1,0 +1,33 @@
+{
+  "batchId": "example-1",
+  "submitTitle": "Submit this answer batch",
+  "questions": [
+    {
+      "id": "direction",
+      "type": "single",
+      "label": "Which direction do you prefer?",
+      "required": true,
+      "allowOther": true,
+      "options": [
+        {
+          "value": "focused",
+          "label": "Focused version",
+          "description": "Prioritize the shortest time to launch.",
+          "recommended": true
+        },
+        {
+          "value": "expanded",
+          "label": "Expanded version",
+          "description": "Include more configurable capabilities in the first release."
+        }
+      ]
+    },
+    {
+      "id": "notes",
+      "type": "textarea",
+      "label": "What other constraints should be preserved?",
+      "required": false,
+      "placeholder": "Optional"
+    }
+  ]
+}

@@ -10,6 +10,12 @@ npx skills add junjie-xyz/skills
 
 ## Skills
 
+### `ask`
+
+Clarify requirements through batched, localized interactive questionnaires.
+
+Use `$ask` or `@ask`, or say `ask me questions`.
+
 ### `fable`
 
 Ask Claude Fable 5 for focused advice, review, analysis, or writing help while keeping paid usage as low as possible. It does not change files or take actions.

@@ -1,0 +1,28 @@
+:root {
+  color-scheme: light;
+  --background: #faf9f5;
+  --foreground: #141413;
+  --card: #ffffff;
+  --card-foreground: #141413;
+  --primary: #141413;
+  --primary-foreground: #faf9f5;
+  --secondary: #f0eee6;
+  --secondary-foreground: #3d3d3a;
+  --muted: #f0eee6;
+  --muted-foreground: #6f6e68;
+  --accent: #f3ded6;
+  --accent-foreground: #8b432f;
+  --destructive: #b42318;
+  --border: #d1cfc5;
+  --input: #d1cfc5;
+  --ring: #d97757;
+  --viz-series-1: #d97757;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--background);
+  color: var(--foreground);
+}
+
+body {
+  margin: 0;
+  padding: 24px;
+}

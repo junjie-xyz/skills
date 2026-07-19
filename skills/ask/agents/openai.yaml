@@ -1,0 +1,5 @@
+interface:
+  display_name: "Ask"
+  short_description: "Ask the user with reusable interactive HTML"
+  default_prompt: "Use $ask to ask me the decisions you need before continuing."
+

@@ -1,0 +1,826 @@
+<div id="__ASK_ROOT_ID__" lang="__ASK_LOCALE__" dir="__ASK_DIR__">
+<div id="ask-surface" class="ask-shell">
+  <div class="ask-layout">
+    <main id="ask-questions" class="ask-main" aria-live="polite"></main>
+  </div>
+  <footer class="ask-footer" aria-label="">
+    <p id="ask-status" class="text-small ask-status" role="status" aria-live="polite"></p>
+    <div class="viz-controls ask-actions">
+      <button id="ask-copy" type="button" class="btn" hidden></button>
+      <button id="ask-submit" type="button" class="btn btn-primary" hidden></button>
+    </div>
+  </footer>
+</div>
+</div>
+
+<style>
+  #ask-surface {
+    color: var(--foreground);
+    padding-top: 8px;
+    width: 100%;
+  }
+
+  #ask-surface .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    color: var(--card-foreground);
+  }
+
+  #ask-surface .card.is-selected {
+    border-color: var(--ring);
+    box-shadow: 0 0 0 1px var(--ring);
+  }
+
+  #ask-surface .btn {
+    appearance: none;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--foreground);
+    cursor: pointer;
+    font: inherit;
+    padding: 9px 14px;
+  }
+
+  #ask-surface .btn-primary {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: var(--primary-foreground);
+  }
+
+  #ask-surface .btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  #ask-surface .btn:focus-visible,
+  #ask-surface .form-check-input:focus-visible,
+  #ask-surface .form-control:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  #ask-surface .form-control {
+    background: var(--card);
+    border: 1px solid var(--input);
+    border-radius: 10px;
+    box-sizing: border-box;
+    color: var(--card-foreground);
+    font: inherit;
+    padding: 10px 12px;
+    width: 100%;
+  }
+
+  #ask-surface .form-check-input {
+    accent-color: var(--primary);
+  }
+
+  #ask-surface .text-small {
+    font-size: 0.875rem;
+  }
+
+  #ask-surface .text-muted {
+    color: var(--muted-foreground);
+  }
+
+  #ask-surface .text-destructive {
+    color: var(--destructive);
+  }
+
+  #ask-surface .viz-grid {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+
+  #ask-surface .viz-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  #ask-surface .viz-badge {
+    background: var(--accent);
+    border-radius: 999px;
+    color: var(--accent-foreground);
+    display: inline-flex;
+    padding: 3px 8px;
+  }
+
+  #ask-surface .form-check-label {
+    min-width: 0;
+  }
+
+  #ask-surface .ask-layout {
+    display: block;
+  }
+
+  #ask-surface .ask-main {
+    display: grid;
+    gap: 0;
+    min-width: 0;
+  }
+
+  #ask-surface .ask-option-header,
+  #ask-surface .ask-option-title {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  #ask-surface .ask-question {
+    border: 0;
+    display: grid;
+    gap: 12px;
+    margin: 0;
+    min-width: 0;
+    padding: 0;
+  }
+
+  #ask-surface .ask-question + .ask-question {
+    border-top: 1px solid var(--border);
+    margin-top: 32px;
+    padding-top: 24px;
+  }
+
+  #ask-surface .ask-legend {
+    color: var(--foreground);
+    font-weight: 500;
+    padding: 0;
+    padding-inline-end: 16px;
+  }
+
+  #ask-surface .ask-options {
+    align-items: stretch;
+    display: grid;
+    gap: 10px;
+  }
+
+  #ask-surface .ask-options-compact {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+  }
+
+  #ask-surface .ask-options-detailed,
+  #ask-surface .ask-options-rich {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #ask-surface .ask-option {
+    cursor: pointer;
+    display: block;
+    min-width: 0;
+    padding: 14px;
+    position: relative;
+  }
+
+  #ask-surface .ask-option *,
+  #ask-surface .ask-option > .form-check-input,
+  #ask-surface .ask-actions .btn:not(:disabled) {
+    cursor: pointer;
+  }
+
+  #ask-surface .ask-option > .form-check-input {
+    height: 32px;
+    margin: 0;
+    opacity: 0;
+    pointer-events: auto;
+    position: absolute;
+    inset-inline-end: 7px;
+    top: 7px;
+    width: 32px;
+    z-index: 2;
+  }
+
+  #ask-surface .ask-choice-indicator {
+    align-items: center;
+    border: 1px solid var(--border);
+    box-sizing: border-box;
+    display: flex;
+    height: 18px;
+    justify-content: center;
+    pointer-events: none;
+    position: absolute;
+    inset-inline-end: 14px;
+    top: 14px;
+    width: 18px;
+    z-index: 1;
+  }
+
+  #ask-surface .ask-choice-indicator-checkbox {
+    border-radius: 5px;
+  }
+
+  #ask-surface .ask-choice-indicator-radio {
+    border-radius: 999px;
+  }
+
+  #ask-surface .ask-option > .form-check-input:checked + .ask-choice-indicator {
+    background: var(--primary);
+    border-color: var(--primary);
+  }
+
+  #ask-surface .ask-option > .form-check-input:checked + .ask-choice-indicator::after {
+    content: "";
+    display: block;
+  }
+
+  #ask-surface .ask-option > input[type="checkbox"]:checked + .ask-choice-indicator::after {
+    border: solid var(--primary-foreground);
+    border-width: 0 2px 2px 0;
+    height: 8px;
+    transform: rotate(45deg) translate(-1px, -1px);
+    width: 4px;
+  }
+
+  #ask-surface .ask-option > input[type="radio"]:checked + .ask-choice-indicator::after {
+    background: var(--primary-foreground);
+    border-radius: 999px;
+    height: 6px;
+    width: 6px;
+  }
+
+  #ask-surface .ask-option-body {
+    display: grid;
+    gap: 8px;
+    min-width: 0;
+    padding-inline-end: 28px;
+  }
+
+  #ask-surface .ask-other-option {
+    grid-column: 1 / -1;
+    padding-block: 10px;
+  }
+
+  #ask-surface .ask-other-option .ask-option-body {
+    align-items: center;
+    gap: 4px 12px;
+    grid-template-columns: max-content minmax(0, 1fr);
+  }
+
+  #ask-surface .ask-option-header > span:first-child {
+    font-weight: 500;
+  }
+
+  #ask-surface .ask-preview {
+    background: var(--background);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--foreground);
+    margin-top: 12px;
+    min-width: 0;
+    padding: 12px;
+    pointer-events: none;
+  }
+
+  #ask-surface .ask-preview svg {
+    display: block;
+    height: auto;
+    margin: 0 auto;
+    max-height: 120px;
+    max-width: 100%;
+  }
+
+  #ask-surface .ask-preview-window {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  #ask-surface .ask-preview-toolbar {
+    align-items: center;
+    background: var(--muted);
+    color: var(--muted-foreground);
+    display: flex;
+    gap: 5px;
+    padding: 7px 9px;
+  }
+
+  #ask-surface .ask-preview-dot {
+    background: currentColor;
+    border-radius: 999px;
+    height: 6px;
+    opacity: 0.45;
+    width: 6px;
+  }
+
+  #ask-surface .ask-preview-content {
+    display: grid;
+    gap: 10px;
+    padding: 12px;
+  }
+
+  #ask-surface .ask-preview-columns {
+    display: grid;
+    gap: 8px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #ask-surface .ask-preview-block,
+  #ask-surface .ask-preview-line {
+    background: var(--secondary);
+    border-radius: 4px;
+  }
+
+  #ask-surface .ask-preview-block {
+    min-height: 42px;
+  }
+
+  #ask-surface .ask-preview-line {
+    height: 7px;
+  }
+
+  #ask-surface .ask-preview-line-short {
+    width: 58%;
+  }
+
+  #ask-surface .ask-preview-action {
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--foreground);
+    justify-self: start;
+    padding: 5px 9px;
+  }
+
+  #ask-surface .ask-other {
+    display: grid;
+    gap: 6px;
+    margin-top: 2px;
+  }
+
+  #ask-surface .ask-other-label {
+    margin: 0;
+  }
+
+  #ask-surface .ask-input {
+    background: var(--muted);
+    border: 1px solid transparent;
+    border-radius: 10px;
+    color: var(--foreground);
+    padding: 11px 12px;
+    transition: background-color 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
+  }
+
+  #ask-surface .ask-input::placeholder {
+    color: var(--muted-foreground);
+  }
+
+  #ask-surface .ask-input:focus-visible {
+    background: var(--background);
+    border-color: var(--ring);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--ring) 22%, transparent);
+    outline: 2px solid transparent;
+  }
+
+  #ask-surface .ask-textarea {
+    min-height: 96px;
+    resize: vertical;
+  }
+
+  #ask-surface .ask-footer {
+    align-items: start;
+    border-top: 1px solid var(--border);
+    display: grid;
+    gap: 10px;
+    grid-template-columns: minmax(0, 1fr);
+    margin-top: 24px;
+    padding-bottom: 24px;
+    padding-top: 16px;
+  }
+
+  #ask-surface .ask-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  #ask-surface .ask-actions .btn {
+    min-width: 132px;
+  }
+
+  #ask-surface .ask-actions .btn[hidden] {
+    display: none;
+  }
+
+  #ask-surface .ask-error[hidden] {
+    display: none;
+  }
+
+  #ask-surface .ask-status {
+    margin: 0;
+  }
+
+  #ask-surface .ask-status:empty {
+    display: none;
+  }
+
+  @media (max-width: 640px) {
+    #ask-surface .ask-options-detailed,
+    #ask-surface .ask-options-rich {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    #ask-surface .ask-actions {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    #ask-surface .ask-footer {
+      align-items: stretch;
+      gap: 8px;
+      grid-template-columns: minmax(0, 1fr);
+      margin-top: 20px;
+      padding-bottom: 20px;
+      padding-top: 14px;
+    }
+
+    #ask-surface .ask-actions .btn {
+      width: 100%;
+    }
+
+    #ask-surface .ask-question + .ask-question {
+      margin-top: 24px;
+      padding-top: 20px;
+    }
+  }
+
+  @media (max-width: 400px) {
+    #ask-surface {
+      padding-top: 4px;
+    }
+
+    #ask-surface .ask-option > .form-check-input {
+      inset-inline-end: 5px;
+      top: 5px;
+    }
+
+    #ask-surface .ask-choice-indicator {
+      inset-inline-end: 12px;
+      top: 12px;
+    }
+
+    #ask-surface .ask-legend {
+      padding-inline-end: 12px;
+    }
+
+    #ask-surface .ask-preview {
+      padding: 8px;
+    }
+
+    #ask-surface .ask-preview svg {
+      max-height: 96px;
+    }
+
+    #ask-surface .ask-preview-toolbar {
+      padding: 5px 7px;
+    }
+
+    #ask-surface .ask-preview-content {
+      gap: 6px;
+      padding: 8px;
+    }
+
+    #ask-surface .ask-preview-block {
+      min-height: 28px;
+    }
+
+    #ask-surface .ask-preview-action {
+      padding: 3px 7px;
+    }
+
+    #ask-surface .ask-other-option .ask-option-body {
+      align-items: start;
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>
+
+<script>
+  (() => {
+    const config = __ASK_CONFIG__;
+    const ui = __ASK_UI__;
+    const fragmentRoot = document.getElementById("__ASK_ROOT_ID__");
+    const root = fragmentRoot.querySelector("#ask-surface");
+    const questionsRoot = root.querySelector("#ask-questions");
+    const footer = root.querySelector(".ask-footer");
+    const submitButton = root.querySelector("#ask-submit");
+    const copyButton = root.querySelector("#ask-copy");
+    const status = root.querySelector("#ask-status");
+    const canSend = __ASK_CAN_SEND__ && Boolean(
+      window.openai && typeof window.openai.sendFollowUpMessage === "function"
+    );
+
+    const allowedTags = new Set([
+      "span", "div", "p", "strong", "em", "small", "code", "pre", "ul", "ol", "li",
+      "svg", "g", "path", "rect", "circle", "ellipse", "line", "polyline", "polygon", "text", "title", "desc"
+    ]);
+    const allowedAttributes = new Set([
+      "class", "id", "role", "viewbox", "width", "height", "x", "y", "x1", "y1", "x2", "y2",
+      "cx", "cy", "r", "rx", "ry", "d", "points", "fill", "stroke", "stroke-width",
+      "stroke-linecap", "stroke-linejoin", "opacity", "text-anchor", "dominant-baseline", "transform"
+    ]);
+    const safePaintValue = /^(?:none|currentcolor|transparent|#[0-9a-f]{3,8}|(?:rgb|rgba|hsl|hsla)\([\d\s.,%+-]+\))$/i;
+
+    function safeMarkup(markup) {
+      const parsedDocument = new DOMParser().parseFromString(markup, "text/html");
+      const previewRoot = parsedDocument.body;
+      previewRoot.querySelectorAll("*").forEach((node) => {
+        if (!allowedTags.has(node.tagName.toLowerCase())) {
+          node.replaceWith(...Array.from(node.childNodes));
+          return;
+        }
+        Array.from(node.attributes).forEach((attribute) => {
+          const name = attribute.name.toLowerCase();
+          const unsafePaint = (name === "fill" || name === "stroke") && !safePaintValue.test(attribute.value.trim());
+          if ((!allowedAttributes.has(name) && !name.startsWith("aria-")) || unsafePaint) {
+            node.removeAttribute(attribute.name);
+          }
+        });
+      });
+      return previewRoot.innerHTML;
+    }
+
+    function setStatus(message, destructive = false) {
+      status.textContent = message;
+      status.classList.toggle("text-destructive", destructive);
+      status.classList.toggle("text-muted", !destructive);
+    }
+
+    function makeText(tag, text, className = "") {
+      const node = document.createElement(tag);
+      node.textContent = text;
+      if (className) node.className = className;
+      return node;
+    }
+
+    function optionInputId(questionId, suffix) {
+      return `ask-${questionId}-${suffix}`;
+    }
+
+    function refreshSelected(questionId) {
+      root.querySelectorAll(`[data-question-options="${questionId}"] .ask-option`).forEach((option) => {
+        const input = option.querySelector("input");
+        option.classList.toggle("is-selected", Boolean(input && input.checked));
+        option.setAttribute("aria-selected", input && input.checked ? "true" : "false");
+      });
+    }
+
+    function bindChoiceCard(label, input, questionId) {
+      input.addEventListener("change", () => refreshSelected(questionId));
+      label.addEventListener("click", (event) => {
+        if (event.target === input) return;
+        event.preventDefault();
+        input.click();
+      });
+    }
+
+    function makeChoiceIndicator(inputType) {
+      const indicator = document.createElement("span");
+      indicator.className = `ask-choice-indicator ask-choice-indicator-${inputType}`;
+      indicator.setAttribute("aria-hidden", "true");
+      return indicator;
+    }
+
+    function renderChoiceQuestion(question, fieldset) {
+      const options = document.createElement("div");
+      options.className = "viz-grid ask-options";
+      const hasRichPreview = question.options.some((option) => Boolean(option.preview));
+      const hasDescriptions = question.options.some((option) => Boolean(option.description));
+      options.classList.add(
+        hasRichPreview
+          ? "ask-options-rich"
+          : hasDescriptions
+            ? "ask-options-detailed"
+            : "ask-options-compact"
+      );
+      options.dataset.questionOptions = question.id;
+
+      question.options.forEach((option, optionIndex) => {
+        const inputId = optionInputId(question.id, `option-${optionIndex}`);
+        const label = document.createElement("label");
+        label.className = "card ask-option";
+        label.setAttribute("aria-selected", "false");
+
+        const input = document.createElement("input");
+        input.className = "form-check-input";
+        input.type = question.type === "single" ? "radio" : "checkbox";
+        input.name = question.id;
+        input.id = inputId;
+        input.value = option.value;
+        input.dataset.optionLabel = option.label;
+        bindChoiceCard(label, input, question.id);
+
+        const body = document.createElement("span");
+        body.className = "ask-option-body form-check-label";
+        const header = document.createElement("span");
+        header.className = "ask-option-header";
+        header.append(makeText("span", option.label));
+        if (option.recommended) header.append(makeText("span", ui.recommended, "viz-badge text-small"));
+        body.append(header);
+        if (option.description) body.append(makeText("span", option.description, "text-small text-muted"));
+
+        if (option.preview) {
+          const preview = document.createElement("span");
+          preview.className = `ask-preview ask-preview-${option.preview.type}`;
+          preview.innerHTML = safeMarkup(option.preview.content);
+          body.append(preview);
+        }
+
+        label.append(input, makeChoiceIndicator(input.type), body);
+        options.append(label);
+      });
+
+      if (question.allowOther) {
+        const otherChoiceId = optionInputId(question.id, "other-choice");
+        const otherOption = document.createElement("label");
+        otherOption.className = "card ask-option ask-other-option";
+        otherOption.setAttribute("aria-selected", "false");
+
+        const otherChoice = document.createElement("input");
+        otherChoice.className = "form-check-input";
+        otherChoice.type = question.type === "single" ? "radio" : "checkbox";
+        otherChoice.name = question.id;
+        otherChoice.id = otherChoiceId;
+        otherChoice.value = "__other__";
+        otherChoice.dataset.optionLabel = ui.other;
+        bindChoiceCard(otherOption, otherChoice, question.id);
+
+        const otherBody = document.createElement("span");
+        otherBody.className = "ask-option-body form-check-label";
+        const otherHeader = document.createElement("span");
+        otherHeader.className = "ask-option-header";
+        otherHeader.append(makeText("span", ui.other));
+        otherBody.append(otherHeader, makeText("span", ui.noneApply, "text-small text-muted"));
+        otherOption.append(otherChoice, makeChoiceIndicator(otherChoice.type), otherBody);
+        options.append(otherOption);
+      }
+
+      fieldset.append(options);
+
+      if (question.allowOther) {
+        const otherTextId = optionInputId(question.id, "other-text");
+        const otherWrap = document.createElement("div");
+        otherWrap.className = "ask-other";
+        const otherLabel = makeText("label", ui.additionalDetailsOptional, "form-label text-small text-muted ask-other-label");
+        otherLabel.htmlFor = otherTextId;
+
+        const otherText = document.createElement("input");
+        otherText.className = "form-control ask-input ask-other-input";
+        otherText.type = "text";
+        otherText.id = otherTextId;
+        otherText.placeholder = question.otherPlaceholder || ui.otherPlaceholder;
+        otherText.dataset.otherFor = question.id;
+        otherText.setAttribute("aria-label", `${question.label}: ${ui.other}`);
+        otherWrap.append(otherLabel, otherText);
+        fieldset.append(otherWrap);
+      }
+    }
+
+    function renderTextQuestion(question, fieldset) {
+      const input = document.createElement(question.type === "textarea" ? "textarea" : "input");
+      input.className = `form-control ask-input${question.type === "textarea" ? " ask-textarea" : ""}`;
+      input.name = question.id;
+      input.dataset.textQuestion = question.id;
+      input.placeholder = question.placeholder || "";
+      input.setAttribute("aria-label", question.label);
+      if (question.type === "textarea") input.rows = 4;
+      else input.type = "text";
+      fieldset.append(input);
+    }
+
+    function renderQuestion(question, index) {
+      const fieldset = document.createElement("fieldset");
+      fieldset.className = "ask-question";
+      fieldset.dataset.questionId = question.id;
+      const legend = document.createElement("legend");
+      legend.className = "ask-legend";
+      const typeHint = question.type === "multi" ? ui.multiHint : "";
+      legend.textContent = `${index + 1}. ${question.label}${typeHint}${question.required ? "\u00a0*" : ""}`;
+      fieldset.append(legend);
+      if (question.description) fieldset.append(makeText("p", question.description, "text-small text-muted"));
+
+      if (question.type === "single" || question.type === "multi") renderChoiceQuestion(question, fieldset);
+      else renderTextQuestion(question, fieldset);
+
+      const error = makeText("p", "", "ask-error text-small text-destructive");
+      error.id = `ask-error-${question.id}`;
+      error.hidden = true;
+      fieldset.append(error);
+      questionsRoot.append(fieldset);
+    }
+
+    function collectAnswers() {
+      const answers = [];
+      let valid = true;
+
+      config.questions.forEach((question) => {
+        const fieldset = root.querySelector(`[data-question-id="${question.id}"]`);
+        const error = root.querySelector(`#ask-error-${question.id}`);
+        let answer = "";
+
+        if (question.type === "single" || question.type === "multi") {
+          const checked = Array.from(fieldset.querySelectorAll(`input[name="${question.id}"]:checked`));
+          const values = checked.map((input) => input.dataset.optionLabel).filter(Boolean);
+          const otherChecked = checked.some((input) => input.value === "__other__");
+          const otherInput = fieldset.querySelector(`[data-other-for="${question.id}"]`);
+          const otherText = otherInput ? otherInput.value.trim() : "";
+          if (otherText && otherChecked) {
+            const otherIndex = values.indexOf(ui.other);
+            if (otherIndex >= 0) values[otherIndex] = `${ui.other}: ${otherText}`;
+          } else if (otherText) {
+            values.push(`${ui.additionalPrefix}: ${otherText}`);
+          }
+          answer = values.join(ui.separator);
+        } else {
+          answer = fieldset.querySelector(`[data-text-question="${question.id}"]`).value.trim();
+        }
+
+        if (question.required && !answer) {
+          valid = false;
+          error.textContent = ui.requiredQuestion;
+          error.hidden = false;
+        } else {
+          error.hidden = true;
+        }
+
+        answers.push({ question: question.label, answer: answer || ui.notAnswered });
+      });
+
+      if (!valid) {
+        const firstError = root.querySelector(".ask-error:not([hidden])");
+        if (firstError) firstError.parentElement.scrollIntoView({ block: "nearest" });
+        setStatus(ui.requiredStatus, true);
+        return null;
+      }
+
+      return answers;
+    }
+
+    function formatResult(answers) {
+      const lines = [`Ask batch: ${config.batchId}`, ""];
+      answers.forEach(({ question, answer }) => {
+        const formatted = answer.replace(/\r?\n/g, "\n  ");
+        lines.push(`- **${question}**: ${formatted}`);
+      });
+      return lines.join("\n");
+    }
+
+    async function copyText(text) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(text);
+        return;
+      }
+      const fallback = document.createElement("textarea");
+      fallback.value = text;
+      fallback.setAttribute("readonly", "");
+      fallback.style.position = "absolute";
+      fallback.style.left = "-9999px";
+      document.body.append(fallback);
+      fallback.select();
+      document.execCommand("copy");
+      fallback.remove();
+    }
+
+    async function copyResult() {
+      const answers = collectAnswers();
+      if (!answers) return;
+      try {
+        await copyText(formatResult(answers));
+        setStatus(ui.copied, false);
+      } catch (error) {
+        setStatus(ui.copyFailed, true);
+      }
+    }
+
+    async function submitResult() {
+      const answers = collectAnswers();
+      if (!answers) return;
+      const result = formatResult(answers);
+      if (!canSend) return;
+
+      submitButton.disabled = true;
+      try {
+        await window.openai.sendFollowUpMessage({
+          prompt: result,
+          title: String(config.submitTitle || ui.defaultSubmitTitle).slice(0, 250)
+        });
+        setStatus(ui.submitted, false);
+      } catch (error) {
+        setStatus(ui.submitFailed, true);
+      } finally {
+        submitButton.disabled = false;
+      }
+    }
+
+    footer.setAttribute("aria-label", ui.actionsAria);
+    copyButton.textContent = ui.copyResults;
+    submitButton.textContent = ui.submit;
+    config.questions.forEach(renderQuestion);
+    copyButton.addEventListener("click", copyResult);
+    submitButton.addEventListener("click", submitResult);
+
+    if (canSend) submitButton.hidden = false;
+    else copyButton.hidden = false;
+  })();
+</script>

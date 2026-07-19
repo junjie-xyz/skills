@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 SKILLS=(
+  "ask"
   "fable"
   "max"
   "name"
