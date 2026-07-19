@@ -12,7 +12,7 @@ ALLOWED_PREVIEW_TYPES = {"html", "svg"}
 BLOCKED_MARKUP = re.compile(
     r"</?(?:script|iframe|object|embed|link|meta|style|foreignObject|animate|set|use"
     r"|form|button|input|select|textarea|a|img|video|audio|canvas|dialog|details|summary)\b"
-    r"|\b(?:on[a-z]+|style|href|src|xlink:href|action|formaction|poster|srcset"
+    r"|\b(?:on[a-z]+|href|src|xlink:href|action|formaction|poster|srcset"
     r"|contenteditable|tabindex|autofocus)\s*="
     r"|url\s*\(|javascript\s*:|data\s*:|https?\s*:|(?<!:)//",
     re.IGNORECASE,

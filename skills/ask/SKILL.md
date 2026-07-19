@@ -24,7 +24,7 @@ Turn unresolved decisions that affect execution into compact interactive questio
 - Describe meaningful differences between options. Mark a recommendation with `recommended: true`, and enable free-form input with `allowOther: true` when useful.
 - Add a `preview` only when it makes comparison materially clearer. Previews support `html` and `svg` for mockups or flowcharts, but export only the selected option, not internal preview state.
 - Keep option layout adaptive: cards with descriptions or previews use at most two columns and collapse to one on narrow screens; short-title-only cards may auto-fit; `Other` spans the full row.
-- Do not allow scripts, event attributes, iframes, remote resources, or executable URLs inside previews.
+- Follow the active OpenAI Visualize skill's HTML contract. Inline CSS is allowed when useful; continue to exclude scripts, event attributes, iframes, network requests, and executable URLs from option previews because previews are presentational and share the questionnaire DOM.
 
 ## Localization
 
@@ -45,7 +45,7 @@ In Codex:
 python3 <skill-dir>/scripts/render_ask.py --config <config.json> --locale <locale> --output <thread-visualization-dir>/ask-<batch-id>.html
 ```
 
-3. Validate the fragment with the bundled visualize `scripts/render.py`, then render it with `::codex-inline-vis{file="ask-<batch-id>.html"}`.
+3. Resolve the active `visualize:visualize` skill directory from its available-skill source path, then validate with `<visualize-skill-dir>/scripts/render.py`. Do not infer the script path from the plugin root. Render with `::codex-inline-vis{file="ask-<batch-id>.html"}`.
 
 When Codex inline visualization is unavailable, generate a standalone page:
 
